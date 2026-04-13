@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LTBrown Community Store</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <h1>LTBrown Community Online Store</h1>
+        <p>Order your favorite items easily!</p>
+    </header>
+
+    <section class="products">
+        <div class="product">
+            <h2>LTBrown T-Shirt</h2>
+            <p>Price: $20</p>
+            <button onclick="addToCart('LTBrown T-Shirt', 20)">Add to Cart</button>
+        </div>
+
+        <div class="product">
+            <h2>LTBrown Hoodie</h2>
+            <p>Price: $40</p>
+            <button onclick="addToCart('LTBrown Hoodie', 40)">Add to Cart</button>
+        </div>
+
+        <div class="product">
+            <h2>LTBrown Cap</h2>
+            <p>Price: $15</p>
+            <button onclick="addToCart('LTBrown Cap', 15)">Add to Cart</button>
+        </div>
+    </section>
+
+    <section class="cart">
+        <h2>Your Cart</h2>
+        <ul id="cart-items"></ul>
+        <h3>Total: $<span id="total">0</span></h3>
+        <button onclick="checkout()">Checkout</button>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
