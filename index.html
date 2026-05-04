@@ -1,9 +1,10 @@
 
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>超級零食超市</title>
+<title>超級零食超市 PRO版</title>
 
 <style>
 body{
@@ -40,6 +41,11 @@ header{
   border-radius:15px;
   box-shadow:0 4px 8px rgba(0,0,0,0.1);
   text-align:center;
+  transition:0.3s;
+}
+
+.product:hover{
+  transform:scale(1.05);
 }
 
 .product img{
@@ -53,11 +59,10 @@ button{
   background:#ff5722;
   color:white;
   border:none;
-  padding:8px;
+  padding:6px;
   border-radius:8px;
   cursor:pointer;
-  margin-top:8px;
-  width:100%;
+  margin-top:5px;
 }
 
 button:hover{
@@ -68,11 +73,11 @@ button:hover{
   flex:1;
   background:#fff3e0;
   padding:20px;
-  min-width:250px;
+  min-width:280px;
 }
 
 .cart-item{
-  margin-bottom:8px;
+  margin-bottom:10px;
 }
 
 .total{
@@ -81,12 +86,10 @@ button:hover{
   font-size:18px;
 }
 
-.discount{
-  margin-top:10px;
-}
-
 .checkout{
   background:#4CAF50;
+  width:100%;
+  margin-top:10px;
 }
 
 .checkout:hover{
@@ -104,14 +107,14 @@ button:hover{
 <body>
 
 <header>
-  <h1>🛒 超級零食超市</h1>
+  <h1>🛒 超級零食超市 PRO</h1>
 </header>
 
 <div class="container">
 
 <div class="products">
 
-<!-- 薯片 -->
+<!-- 香脆薯片 -->
 <div class="product">
   <img src="https://pic2.zhimg.com/v2-47835973f59119bfed8d0865dc3a9ff9_r.jpg">
   <h3>香脆薯片</h3>
@@ -127,36 +130,36 @@ button:hover{
   <button onclick="addToCart('巧克力',40)">加入購物車</button>
 </div>
 
-<!-- 巧顆粒 -->
+<!-- 🆕 減糖 OREO -->
 <div class="product">
-  <img src="https://images.unsplash.com/photo-1587735243615-c03f25aaff15">
-  <h3>巧顆粒</h3>
+  <img src="image.png">
+  <h3>減糖OREO餅乾</h3>
   <p>$45</p>
-  <button onclick="addToCart('巧顆粒',45)">加入購物車</button>
+  <button onclick="addToCart('減糖OREO餅乾',45)">加入購物車</button>
 </div>
 
-<!-- 餅乾 -->
+<!-- 經典可樂 -->
 <div class="product">
-  <img src="https://images.unsplash.com/photo-1505253210343-2f9c8e5f9b3c">
-  <h3>餅乾</h3>
+  <img src="cola.png">
+  <h3>經典可樂</h3>
   <p>$35</p>
-  <button onclick="addToCart('餅乾',35)">加入購物車</button>
+  <button onclick="addToCart('經典可樂',35)">加入購物車</button>
 </div>
 
-<!-- 飲料 -->
+<!-- 超人氣零食 -->
 <div class="product">
-  <img src="https://images.unsplash.com/photo-1590080877777-9f6d8d6a1f4e">
-  <h3>汽水</h3>
-  <p>$30</p>
-  <button onclick="addToCart('汽水',30)">加入購物車</button>
+  <img src="https://img.alicdn.com/imgextra/i1/2217937106238/O1CN01Mb1Ud71vx3jwXQnPP_!!2217937106238.jpg">
+  <h3>超人氣零食</h3>
+  <p>$60</p>
+  <button onclick="addToCart('超人氣零食',60)">加入購物車</button>
 </div>
 
-<!-- 組合包 -->
+<!-- 香甜餅乾 -->
 <div class="product">
-  <img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092">
-  <h3>零食組合包</h3>
-  <p>$150</p>
-  <button onclick="addToCart('零食組合包',150)">加入購物車</button>
+  <img src="https://imgservice.suning.cn/uimg1/b2c/image/dmxOHawNX4Ilj59bipUcRA.jpg">
+  <h3>香甜餅乾</h3>
+  <p>$55</p>
+  <button onclick="addToCart('香甜餅乾',55)">加入購物車</button>
 </div>
 
 </div>
@@ -164,73 +167,81 @@ button:hover{
 <div class="cart">
   <h2>🛒 購物車</h2>
   <div id="cartItems"></div>
-
-  <div class="discount">
-    折扣碼:
-    <input type="text" id="coupon">
-    <button onclick="applyDiscount()">套用</button>
-  </div>
-
-  <div class="total">
-    總金額: $<span id="total">0</span>
-  </div>
-
+  <div class="total">總金額: $<span id="total">0</span></div>
+  <div id="discountInfo"></div>
   <button class="checkout" onclick="checkout()">結帳</button>
 </div>
 
 </div>
 
 <script>
-let total = 0;
-let discount = 0;
+let cart = JSON.parse(localStorage.getItem("cart")) || {};
+
+function saveCart(){
+  localStorage.setItem("cart",JSON.stringify(cart));
+}
 
 function addToCart(name, price){
-  const cartItems = document.getElementById("cartItems");
-
-  const item = document.createElement("div");
-  item.className = "cart-item";
-  item.innerHTML = name + " - $" + price +
-    " <button onclick='removeItem(this,"+price+")'>刪除</button>";
-
-  cartItems.appendChild(item);
-
-  total += price;
-  updateTotal();
+  if(cart[name]){
+    cart[name].qty++;
+  }else{
+    cart[name]={price:price,qty:1};
+  }
+  saveCart();
+  renderCart();
 }
 
-function removeItem(button, price){
-  button.parentElement.remove();
-  total -= price;
-  updateTotal();
+function changeQty(name, amount){
+  cart[name].qty += amount;
+  if(cart[name].qty <=0){
+    delete cart[name];
+  }
+  saveCart();
+  renderCart();
 }
 
-function applyDiscount(){
-  const code = document.getElementById("coupon").value;
+function renderCart(){
+  const cartItems=document.getElementById("cartItems");
+  cartItems.innerHTML="";
+  let total=0;
 
-  if(code === "SNACK10"){
-    discount = 0.1;
-    alert("折扣成功！打9折");
-  } else {
-    discount = 0;
-    alert("折扣碼錯誤");
+  for(let name in cart){
+    let item=cart[name];
+    total += item.price*item.qty;
+
+    cartItems.innerHTML+=`
+      <div class="cart-item">
+        ${name} ($${item.price}) x ${item.qty}
+        <button onclick="changeQty('${name}',1)">+</button>
+        <button onclick="changeQty('${name}',-1)">-</button>
+      </div>
+    `;
   }
 
-  updateTotal();
-}
+  let finalTotal=total;
+  let discountText="";
 
-function updateTotal(){
-  const finalTotal = total - (total * discount);
-  document.getElementById("total").innerText = finalTotal.toFixed(0);
+  if(total>=300){
+    finalTotal=total*0.9;
+    discountText="🎉 滿300自動打9折！";
+  }
+
+  document.getElementById("total").innerText=finalTotal.toFixed(0);
+  document.getElementById("discountInfo").innerText=discountText;
 }
 
 function checkout(){
-  if(total === 0){
+  if(Object.keys(cart).length===0){
     alert("購物車是空的！");
-  } else {
-    alert("感謝購買！付款成功 🎉");
-    location.reload();
+  }else{
+    alert("付款成功 🎉");
+    cart={};
+    saveCart();
+    renderCart();
   }
 }
+
+renderCart();
 </script>
 
 </body>
