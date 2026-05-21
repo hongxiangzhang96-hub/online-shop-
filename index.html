@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>超級零食超市 Pro</title>
+<title>Super Snack Market Pro</title>
 
 <style>
+
 *{
   margin:0;
   padding:0;
@@ -13,11 +14,11 @@
 }
 
 body{
-  font-family:Arial;
+  font-family:Arial, sans-serif;
   background:#fff8e1;
 }
 
-/* ========== 登入頁 ========== */
+/* ================= LOGIN PAGE ================= */
 
 .auth-page{
   min-height:100vh;
@@ -77,18 +78,18 @@ body{
   background:#e64a19;
 }
 
-.switch{
-  text-align:center;
-  margin-top:15px;
-  cursor:pointer;
-  color:#ff5722;
-}
-
 .google-btn{
   background:#4285F4 !important;
 }
 
-/* ========== 商店 ========== */
+.switch{
+  text-align:center;
+  margin-top:15px;
+  color:#ff5722;
+  cursor:pointer;
+}
+
+/* ================= HEADER ================= */
 
 header{
   background:#ff5722;
@@ -108,12 +109,20 @@ header{
   width:auto;
   padding:8px 15px;
   background:#333;
+  border:none;
+  color:white;
+  border-radius:8px;
+  cursor:pointer;
 }
+
+/* ================= LAYOUT ================= */
 
 .container{
   display:flex;
   flex-wrap:wrap;
 }
+
+/* ================= PRODUCTS ================= */
 
 .products{
   flex:2;
@@ -160,12 +169,12 @@ header{
   background:#e64a19;
 }
 
-/* 購物車 */
+/* ================= CART ================= */
 
 .cart{
   flex:1;
-  background:#fff3e0;
   min-width:300px;
+  background:#fff3e0;
   padding:20px;
 }
 
@@ -200,12 +209,6 @@ header{
   margin:0 10px;
 }
 
-.total{
-  margin-top:20px;
-  font-size:22px;
-  font-weight:bold;
-}
-
 .discount{
   margin-top:15px;
 }
@@ -216,14 +219,20 @@ header{
   margin-top:5px;
 }
 
-.checkout{
+.total{
   margin-top:20px;
-  background:#4CAF50;
+  font-size:22px;
+  font-weight:bold;
+}
+
+.checkout{
   width:100%;
+  margin-top:20px;
   padding:12px;
   border:none;
-  color:white;
   border-radius:10px;
+  background:#4CAF50;
+  color:white;
   cursor:pointer;
 }
 
@@ -231,12 +240,12 @@ header{
   background:#3e8e41;
 }
 
-/* 管理員 */
+/* ================= ADMIN PANEL ================= */
 
 .admin-panel{
-  padding:20px;
-  background:#fff;
+  background:white;
   margin:20px;
+  padding:20px;
   border-radius:15px;
 }
 
@@ -247,107 +256,124 @@ header{
 
 .admin-panel button{
   padding:10px;
+  border:none;
+  background:#ff5722;
+  color:white;
+  border-radius:8px;
+  cursor:pointer;
 }
 
-/* 手機 */
+/* ================= MOBILE ================= */
 
 @media(max-width:768px){
-  .container{
-    flex-direction:column;
-  }
+
+.container{
+  flex-direction:column;
 }
+
+}
+
 </style>
 </head>
 
 <body>
 
-<!-- ================= 登入 ================= -->
+<!-- ================= LOGIN PAGE ================= -->
 
 <div class="auth-page" id="authPage">
 
 <div class="auth-box">
 
-<h1 id="formTitle">會員登入</h1>
+<h1 id="formTitle">Member Login</h1>
 
-<input type="text" id="username" placeholder="帳號">
+<input type="text" id="username" placeholder="Username">
 
-<input type="password" id="password" placeholder="密碼">
+<input type="password" id="password" placeholder="Password">
 
-<button onclick="login()">登入</button>
+<button onclick="login()">Login</button>
 
 <button class="google-btn" onclick="googleLogin()">
-Google登入
+Login with Google
 </button>
 
 <div class="switch" onclick="toggleForm()">
-還沒有帳號？點我註冊
+No account? Click to Register
 </div>
 
 </div>
 </div>
 
-<!-- ================= 商店 ================= -->
+<!-- ================= SHOP PAGE ================= -->
 
 <div id="shopPage" style="display:none;">
 
 <header>
-<h1>🛒 超級零食超市 Pro</h1>
+
+<h1>🛒 Super Snack Market Pro</h1>
 
 <div class="top-bar">
-歡迎：
+
+Welcome:
 <span id="userText"></span>
 
 <button class="logout-btn" onclick="logout()">
-登出
+Logout
 </button>
+
 </div>
+
 </header>
 
-<!-- 管理員 -->
+<!-- ================= ADMIN DASHBOARD ================= -->
 
 <div class="admin-panel" id="adminPanel" style="display:none;">
-<h2>🛠 管理員後台</h2>
 
-<input type="text" id="newName" placeholder="商品名稱">
+<h2>🛠 Admin Dashboard</h2>
 
-<input type="number" id="newPrice" placeholder="價格">
+<input type="text" id="newName" placeholder="Product Name">
 
-<input type="text" id="newImage" placeholder="圖片網址">
+<input type="number" id="newPrice" placeholder="Price">
+
+<input type="text" id="newImage" placeholder="Image URL">
 
 <button onclick="addProduct()">
-新增商品
+Add Product
 </button>
+
 </div>
 
 <div class="container">
 
-<div class="products" id="products">
+<!-- PRODUCTS -->
 
-</div>
+<div class="products" id="products"></div>
+
+<!-- CART -->
 
 <div class="cart">
 
-<h2>🛒 購物車</h2>
+<h2>🛒 Shopping Cart</h2>
 
 <div id="cartItems"></div>
 
 <div class="discount">
-折扣碼
+
+Discount Code
 
 <input type="text" id="coupon">
 
 <button onclick="applyDiscount()">
-套用折扣
+Apply Discount
 </button>
+
 </div>
 
 <div class="total">
-總金額：
-$<span id="total">0</span>
+Total: $<span id="total">0</span>
 </div>
 
 <button class="checkout" onclick="checkout()">
-結帳
+Checkout
 </button>
 
 </div>
@@ -357,37 +383,37 @@ $<span id="total">0</span>
 
 <script>
 
-/* ================= 商品 ================= */
+/* ================= PRODUCTS ================= */
 
 let products = [
 
 {
-name:"香脆薯片",
+name:"Crispy Potato Chips",
 price:50,
 image:"https://pic2.zhimg.com/v2-47835973f59119bfed8d0865dc3a9ff9_r.jpg"
 },
 
 {
-name:"Dove巧克力",
+name:"Dove Chocolate",
 price:50,
 image:"https://img.shopping.friday.tw/images/product/288/8640614/8640614_3_1.webp?288362"
 },
 
 {
-name:"OREO餅乾",
+name:"OREO Cookies",
 price:45,
 image:"https://img.jollybuy.com/S231109162347614/goods/14c52801f91842559c82a8231def1947_Q50.jpg"
 },
 
 {
-name:"經典可樂",
+name:"Classic Cola",
 price:30,
 image:"https://www.mashed.com/img/gallery/a-can-of-coca-cola-is-being-sold-for-over-300000/intro-1683831628.jpg"
 }
 
 ];
 
-/* ================= 使用者 ================= */
+/* ================= USER SYSTEM ================= */
 
 let isLogin = true;
 
@@ -396,16 +422,17 @@ function toggleForm(){
 isLogin = !isLogin;
 
 document.getElementById("formTitle").innerText =
-isLogin ? "會員登入" : "會員註冊";
+isLogin ? "Member Login" : "Member Register";
 
 document.querySelector(".switch").innerText =
 isLogin ?
-"還沒有帳號？點我註冊"
+"No account? Click to Register"
 :
-"已經有帳號？點我登入";
+"Already have an account? Click to Login";
+
 }
 
-/* ================= 註冊 ================= */
+/* ================= REGISTER ================= */
 
 function register(){
 
@@ -416,26 +443,31 @@ const password =
 document.getElementById("password").value;
 
 if(username === "" || password === ""){
-alert("請輸入完整資料");
+
+alert("Please fill in all fields");
+
 return;
+
 }
 
-localStorage.setItem(
-username,
-password
-);
+localStorage.setItem(username,password);
 
-alert("註冊成功！");
+alert("Registration Successful!");
+
 toggleForm();
+
 }
 
-/* ================= 登入 ================= */
+/* ================= LOGIN ================= */
 
 function login(){
 
 if(!isLogin){
+
 register();
+
 return;
+
 }
 
 const username =
@@ -454,59 +486,71 @@ localStorage.setItem("currentUser",username);
 showShop(username);
 
 }else{
-alert("帳號或密碼錯誤");
-}
+
+alert("Incorrect username or password");
+
 }
 
-/* ================= Google登入(假) ================= */
+}
+
+/* ================= GOOGLE LOGIN ================= */
 
 function googleLogin(){
 
-const username = "Google使用者";
+const username = "Google User";
 
 localStorage.setItem("currentUser",username);
 
 showShop(username);
+
 }
 
-/* ================= 顯示商店 ================= */
+/* ================= SHOW SHOP ================= */
 
 function showShop(username){
 
-document.getElementById("authPage").style.display="none";
+document.getElementById("authPage").style.display =
+"none";
 
-document.getElementById("shopPage").style.display="block";
+document.getElementById("shopPage").style.display =
+"block";
 
-document.getElementById("userText").innerText=username;
+document.getElementById("userText").innerText =
+username;
 
-/* 管理員 */
+/* ADMIN ACCOUNT */
 
 if(username === "admin"){
-document.getElementById("adminPanel").style.display="block";
+
+document.getElementById("adminPanel").style.display =
+"block";
+
 }
 
 renderProducts();
 
 loadCart();
+
 }
 
-/* ================= 登出 ================= */
+/* ================= LOGOUT ================= */
 
 function logout(){
 
 localStorage.removeItem("currentUser");
 
 location.reload();
+
 }
 
-/* ================= 商品渲染 ================= */
+/* ================= RENDER PRODUCTS ================= */
 
 function renderProducts(){
 
 const box =
 document.getElementById("products");
 
-box.innerHTML="";
+box.innerHTML = "";
 
 products.forEach((p,index)=>{
 
@@ -521,16 +565,18 @@ box.innerHTML += `
 <p>$${p.price}</p>
 
 <button onclick="addToCart(${index})">
-加入購物車
+Add to Cart
 </button>
 
 </div>
 
 `;
+
 });
+
 }
 
-/* ================= 購物車 ================= */
+/* ================= CART ================= */
 
 let cart = [];
 
@@ -543,17 +589,22 @@ p => p.name === item.name
 );
 
 if(exist){
+
 exist.qty++;
+
 }else{
+
 cart.push({
 ...item,
 qty:1
 });
+
 }
 
 saveCart();
 
 renderCart();
+
 }
 
 function renderCart(){
@@ -561,7 +612,7 @@ function renderCart(){
 const cartBox =
 document.getElementById("cartItems");
 
-cartBox.innerHTML="";
+cartBox.innerHTML = "";
 
 let total = 0;
 
@@ -594,16 +645,20 @@ cartBox.innerHTML += `
 </div>
 
 `;
+
 });
 
-/* 折扣 */
+/* DISCOUNT */
 
 if(discount > 0){
+
 total = total - total * discount;
+
 }
 
-document.getElementById("total")
-.innerText = total.toFixed(0);
+document.getElementById("total").innerText =
+total.toFixed(0);
+
 }
 
 function changeQty(index,num){
@@ -611,15 +666,18 @@ function changeQty(index,num){
 cart[index].qty += num;
 
 if(cart[index].qty <= 0){
+
 cart.splice(index,1);
+
 }
 
 saveCart();
 
 renderCart();
+
 }
 
-/* ================= localStorage ================= */
+/* ================= SAVE CART ================= */
 
 function saveCart(){
 
@@ -627,6 +685,7 @@ localStorage.setItem(
 "cart",
 JSON.stringify(cart)
 );
+
 }
 
 function loadCart(){
@@ -635,12 +694,16 @@ const saved =
 localStorage.getItem("cart");
 
 if(saved){
+
 cart = JSON.parse(saved);
+
 renderCart();
-}
+
 }
 
-/* ================= 折扣 ================= */
+}
+
+/* ================= DISCOUNT ================= */
 
 let discount = 0;
 
@@ -653,44 +716,49 @@ if(code === "SNACK10"){
 
 discount = 0.1;
 
-alert("成功套用9折優惠");
+alert("10% discount applied!");
 
 }else if(code === "VIP20"){
 
 discount = 0.2;
 
-alert("成功套用8折優惠");
+alert("20% discount applied!");
 
 }else{
 
 discount = 0;
 
-alert("折扣碼錯誤");
+alert("Invalid discount code");
 
 }
 
 renderCart();
+
 }
 
-/* ================= 結帳 ================= */
+/* ================= CHECKOUT ================= */
 
 function checkout(){
 
 if(cart.length === 0){
-alert("購物車是空的");
+
+alert("Your cart is empty");
+
 return;
+
 }
 
-alert("付款成功 🎉");
+alert("Payment Successful 🎉");
 
 cart = [];
 
 saveCart();
 
 renderCart();
+
 }
 
-/* ================= 新增商品 ================= */
+/* ================= ADD PRODUCT ================= */
 
 function addProduct(){
 
@@ -703,9 +771,12 @@ document.getElementById("newPrice").value;
 const image =
 document.getElementById("newImage").value;
 
-if(name==="" || price==="" || image===""){
-alert("請輸入完整商品資料");
+if(name === "" || price === "" || image === ""){
+
+alert("Please complete all product information");
+
 return;
+
 }
 
 products.push({
@@ -716,16 +787,19 @@ image
 
 renderProducts();
 
-alert("新增成功");
+alert("Product Added Successfully");
+
 }
 
-/* ================= 自動登入 ================= */
+/* ================= AUTO LOGIN ================= */
 
 const currentUser =
 localStorage.getItem("currentUser");
 
 if(currentUser){
+
 showShop(currentUser);
+
 }
 
 </script>
