@@ -1,22 +1,113 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>超級零食超市</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>超級零食超市 Pro</title>
 
 <style>
-body{
-  font-family: Arial;
+*{
   margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:Arial;
   background:#fff8e1;
 }
+
+/* ========== 登入頁 ========== */
+
+.auth-page{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#ff9800,#ff5722);
+}
+
+.auth-box{
+  background:white;
+  width:350px;
+  padding:35px;
+  border-radius:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.2);
+  animation:show .5s;
+}
+
+@keyframes show{
+  from{
+    opacity:0;
+    transform:translateY(30px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+.auth-box h1{
+  text-align:center;
+  margin-bottom:25px;
+  color:#ff5722;
+}
+
+.auth-box input{
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border-radius:10px;
+  border:1px solid #ccc;
+}
+
+.auth-box button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  background:#ff5722;
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+  margin-top:10px;
+}
+
+.auth-box button:hover{
+  background:#e64a19;
+}
+
+.switch{
+  text-align:center;
+  margin-top:15px;
+  cursor:pointer;
+  color:#ff5722;
+}
+
+.google-btn{
+  background:#4285F4 !important;
+}
+
+/* ========== 商店 ========== */
 
 header{
   background:#ff5722;
   color:white;
   padding:20px;
   text-align:center;
+  position:sticky;
+  top:0;
+  z-index:999;
+}
+
+.top-bar{
+  margin-top:10px;
+}
+
+.logout-btn{
+  width:auto;
+  padding:8px 15px;
+  background:#333;
 }
 
 .container{
@@ -34,64 +125,131 @@ header{
 
 .product{
   background:white;
-  width:220px;
+  width:230px;
   margin:15px;
   padding:15px;
   border-radius:15px;
-  box-shadow:0 4px 8px rgba(0,0,0,0.1);
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
   text-align:center;
+  transition:0.3s;
+}
+
+.product:hover{
+  transform:translateY(-5px);
 }
 
 .product img{
   width:100%;
-  height:160px;
+  height:170px;
   object-fit:cover;
   border-radius:10px;
 }
 
-button{
+.product button{
+  margin-top:10px;
+  width:100%;
   background:#ff5722;
   color:white;
   border:none;
-  padding:8px;
+  padding:10px;
   border-radius:8px;
   cursor:pointer;
-  margin-top:8px;
-  width:100%;
 }
 
-button:hover{
+.product button:hover{
   background:#e64a19;
 }
+
+/* 購物車 */
 
 .cart{
   flex:1;
   background:#fff3e0;
+  min-width:300px;
   padding:20px;
-  min-width:250px;
+}
+
+.cart h2{
+  margin-bottom:15px;
 }
 
 .cart-item{
-  margin-bottom:8px;
+  background:white;
+  margin-bottom:10px;
+  padding:10px;
+  border-radius:10px;
+}
+
+.qty{
+  display:flex;
+  align-items:center;
+  margin-top:8px;
+}
+
+.qty button{
+  width:30px;
+  height:30px;
+  border:none;
+  background:#ff5722;
+  color:white;
+  border-radius:5px;
+  cursor:pointer;
+}
+
+.qty span{
+  margin:0 10px;
 }
 
 .total{
+  margin-top:20px;
+  font-size:22px;
   font-weight:bold;
-  margin-top:10px;
-  font-size:18px;
 }
 
 .discount{
-  margin-top:10px;
+  margin-top:15px;
+}
+
+.discount input{
+  width:100%;
+  padding:10px;
+  margin-top:5px;
 }
 
 .checkout{
+  margin-top:20px;
   background:#4CAF50;
+  width:100%;
+  padding:12px;
+  border:none;
+  color:white;
+  border-radius:10px;
+  cursor:pointer;
 }
 
 .checkout:hover{
   background:#3e8e41;
 }
+
+/* 管理員 */
+
+.admin-panel{
+  padding:20px;
+  background:#fff;
+  margin:20px;
+  border-radius:15px;
+}
+
+.admin-panel input{
+  padding:10px;
+  margin:5px;
+}
+
+.admin-panel button{
+  padding:10px;
+}
+
+/* 手機 */
 
 @media(max-width:768px){
   .container{
@@ -103,117 +261,473 @@ button:hover{
 
 <body>
 
+<!-- ================= 登入 ================= -->
+
+<div class="auth-page" id="authPage">
+
+<div class="auth-box">
+
+<h1 id="formTitle">會員登入</h1>
+
+<input type="text" id="username" placeholder="帳號">
+
+<input type="password" id="password" placeholder="密碼">
+
+<button onclick="login()">登入</button>
+
+<button class="google-btn" onclick="googleLogin()">
+Google登入
+</button>
+
+<div class="switch" onclick="toggleForm()">
+還沒有帳號？點我註冊
+</div>
+
+</div>
+</div>
+
+<!-- ================= 商店 ================= -->
+
+<div id="shopPage" style="display:none;">
+
 <header>
-  <h1>🛒 超級零食超市</h1>
+<h1>🛒 超級零食超市 Pro</h1>
+
+<div class="top-bar">
+歡迎：
+<span id="userText"></span>
+
+<button class="logout-btn" onclick="logout()">
+登出
+</button>
+</div>
 </header>
+
+<!-- 管理員 -->
+
+<div class="admin-panel" id="adminPanel" style="display:none;">
+<h2>🛠 管理員後台</h2>
+
+<input type="text" id="newName" placeholder="商品名稱">
+
+<input type="number" id="newPrice" placeholder="價格">
+
+<input type="text" id="newImage" placeholder="圖片網址">
+
+<button onclick="addProduct()">
+新增商品
+</button>
+</div>
 
 <div class="container">
 
-<div class="products">
+<div class="products" id="products">
 
-<!-- 薯片 -->
-<div class="product">
-  <img src="https://pic2.zhimg.com/v2-47835973f59119bfed8d0865dc3a9ff9_r.jpg">
-  <h3>香脆薯片</h3>
-  <p>$50</p>
-  <button onclick="addToCart('香脆薯片',50)">加入購物車</button>
-</div>
-
-<!-- Dove巧克力 -->
-<div class="product">
-  <img src="https://img.shopping.friday.tw/images/product/288/8640614/8640614_3_1.webp?288362">
-  <h3>Dove 巧克力</h3>
-  <p>$50</p>
-  <button onclick="addToCart('Dove巧克力',50)">加入購物車</button>
-</div>
-
-<!-- OREO餅乾 -->
-<div class="product">
-  <img src="https://img.jollybuy.com/S231109162347614/goods/14c52801f91842559c82a8231def1947_Q50.jpg">
-  <h3>減糖OREO餅乾</h3>
-  <p>$45</p>
-  <button onclick="addToCart('減糖OREO餅乾',45)">加入購物車</button>
-</div>
-
-<!-- 可樂 -->
-<div class="product">
-  <img src="https://www.mashed.com/img/gallery/a-can-of-coca-cola-is-being-sold-for-over-300000/intro-1683831628.jpg">
-  <h3>經典可樂</h3>
-  <p>$30</p>
-  <button onclick="addToCart('經典可樂',30)">加入購物車</button>
-</div>
 </div>
 
 <div class="cart">
-  <h2>🛒 購物車</h2>
-  <div id="cartItems"></div>
 
-  <div class="discount">
-    折扣碼:
-    <input type="text" id="coupon">
-    <button onclick="applyDiscount()">套用</button>
-  </div>
+<h2>🛒 購物車</h2>
 
-  <div class="total">
-    總金額: $<span id="total">0</span>
-  </div>
+<div id="cartItems"></div>
 
-  <button class="checkout" onclick="checkout()">結帳</button>
+<div class="discount">
+折扣碼
+
+<input type="text" id="coupon">
+
+<button onclick="applyDiscount()">
+套用折扣
+</button>
 </div>
 
+<div class="total">
+總金額：
+$<span id="total">0</span>
+</div>
+
+<button class="checkout" onclick="checkout()">
+結帳
+</button>
+
+</div>
+
+</div>
 </div>
 
 <script>
+
+/* ================= 商品 ================= */
+
+let products = [
+
+{
+name:"香脆薯片",
+price:50,
+image:"https://pic2.zhimg.com/v2-47835973f59119bfed8d0865dc3a9ff9_r.jpg"
+},
+
+{
+name:"Dove巧克力",
+price:50,
+image:"https://img.shopping.friday.tw/images/product/288/8640614/8640614_3_1.webp?288362"
+},
+
+{
+name:"OREO餅乾",
+price:45,
+image:"https://img.jollybuy.com/S231109162347614/goods/14c52801f91842559c82a8231def1947_Q50.jpg"
+},
+
+{
+name:"經典可樂",
+price:30,
+image:"https://www.mashed.com/img/gallery/a-can-of-coca-cola-is-being-sold-for-over-300000/intro-1683831628.jpg"
+}
+
+];
+
+/* ================= 使用者 ================= */
+
+let isLogin = true;
+
+function toggleForm(){
+
+isLogin = !isLogin;
+
+document.getElementById("formTitle").innerText =
+isLogin ? "會員登入" : "會員註冊";
+
+document.querySelector(".switch").innerText =
+isLogin ?
+"還沒有帳號？點我註冊"
+:
+"已經有帳號？點我登入";
+}
+
+/* ================= 註冊 ================= */
+
+function register(){
+
+const username =
+document.getElementById("username").value;
+
+const password =
+document.getElementById("password").value;
+
+if(username === "" || password === ""){
+alert("請輸入完整資料");
+return;
+}
+
+localStorage.setItem(
+username,
+password
+);
+
+alert("註冊成功！");
+toggleForm();
+}
+
+/* ================= 登入 ================= */
+
+function login(){
+
+if(!isLogin){
+register();
+return;
+}
+
+const username =
+document.getElementById("username").value;
+
+const password =
+document.getElementById("password").value;
+
+const saved =
+localStorage.getItem(username);
+
+if(saved === password){
+
+localStorage.setItem("currentUser",username);
+
+showShop(username);
+
+}else{
+alert("帳號或密碼錯誤");
+}
+}
+
+/* ================= Google登入(假) ================= */
+
+function googleLogin(){
+
+const username = "Google使用者";
+
+localStorage.setItem("currentUser",username);
+
+showShop(username);
+}
+
+/* ================= 顯示商店 ================= */
+
+function showShop(username){
+
+document.getElementById("authPage").style.display="none";
+
+document.getElementById("shopPage").style.display="block";
+
+document.getElementById("userText").innerText=username;
+
+/* 管理員 */
+
+if(username === "admin"){
+document.getElementById("adminPanel").style.display="block";
+}
+
+renderProducts();
+
+loadCart();
+}
+
+/* ================= 登出 ================= */
+
+function logout(){
+
+localStorage.removeItem("currentUser");
+
+location.reload();
+}
+
+/* ================= 商品渲染 ================= */
+
+function renderProducts(){
+
+const box =
+document.getElementById("products");
+
+box.innerHTML="";
+
+products.forEach((p,index)=>{
+
+box.innerHTML += `
+
+<div class="product">
+
+<img src="${p.image}">
+
+<h3>${p.name}</h3>
+
+<p>$${p.price}</p>
+
+<button onclick="addToCart(${index})">
+加入購物車
+</button>
+
+</div>
+
+`;
+});
+}
+
+/* ================= 購物車 ================= */
+
+let cart = [];
+
+function addToCart(index){
+
+const item = products[index];
+
+const exist = cart.find(
+p => p.name === item.name
+);
+
+if(exist){
+exist.qty++;
+}else{
+cart.push({
+...item,
+qty:1
+});
+}
+
+saveCart();
+
+renderCart();
+}
+
+function renderCart(){
+
+const cartBox =
+document.getElementById("cartItems");
+
+cartBox.innerHTML="";
+
 let total = 0;
+
+cart.forEach((item,index)=>{
+
+total += item.price * item.qty;
+
+cartBox.innerHTML += `
+
+<div class="cart-item">
+
+<h4>${item.name}</h4>
+
+<p>$${item.price}</p>
+
+<div class="qty">
+
+<button onclick="changeQty(${index},-1)">
+-
+</button>
+
+<span>${item.qty}</span>
+
+<button onclick="changeQty(${index},1)">
++
+</button>
+
+</div>
+
+</div>
+
+`;
+});
+
+/* 折扣 */
+
+if(discount > 0){
+total = total - total * discount;
+}
+
+document.getElementById("total")
+.innerText = total.toFixed(0);
+}
+
+function changeQty(index,num){
+
+cart[index].qty += num;
+
+if(cart[index].qty <= 0){
+cart.splice(index,1);
+}
+
+saveCart();
+
+renderCart();
+}
+
+/* ================= localStorage ================= */
+
+function saveCart(){
+
+localStorage.setItem(
+"cart",
+JSON.stringify(cart)
+);
+}
+
+function loadCart(){
+
+const saved =
+localStorage.getItem("cart");
+
+if(saved){
+cart = JSON.parse(saved);
+renderCart();
+}
+}
+
+/* ================= 折扣 ================= */
+
 let discount = 0;
 
-function addToCart(name, price){
-  const cartItems = document.getElementById("cartItems");
-
-  const item = document.createElement("div");
-  item.className = "cart-item";
-  item.innerHTML = name + " - $" + price +
-    " <button onclick='removeItem(this,"+price+")'>刪除</button>";
-
-  cartItems.appendChild(item);
-
-  total += price;
-  updateTotal();
-}
-
-function removeItem(button, price){
-  button.parentElement.remove();
-  total -= price;
-  updateTotal();
-}
-
 function applyDiscount(){
-  const code = document.getElementById("coupon").value;
 
-  if(code === "SNACK10"){
-    discount = 0.1;
-    alert("折扣成功！打9折");
-  } else {
-    discount = 0;
-    alert("折扣碼錯誤");
-  }
+const code =
+document.getElementById("coupon").value;
 
-  updateTotal();
+if(code === "SNACK10"){
+
+discount = 0.1;
+
+alert("成功套用9折優惠");
+
+}else if(code === "VIP20"){
+
+discount = 0.2;
+
+alert("成功套用8折優惠");
+
+}else{
+
+discount = 0;
+
+alert("折扣碼錯誤");
+
 }
 
-function updateTotal(){
-  const finalTotal = total - (total * discount);
-  document.getElementById("total").innerText = finalTotal.toFixed(0);
+renderCart();
 }
+
+/* ================= 結帳 ================= */
 
 function checkout(){
-  if(total === 0){
-    alert("購物車是空的！");
-  } else {
-    alert("感謝購買！付款成功 🎉");
-    location.reload();
-  }
+
+if(cart.length === 0){
+alert("購物車是空的");
+return;
 }
+
+alert("付款成功 🎉");
+
+cart = [];
+
+saveCart();
+
+renderCart();
+}
+
+/* ================= 新增商品 ================= */
+
+function addProduct(){
+
+const name =
+document.getElementById("newName").value;
+
+const price =
+document.getElementById("newPrice").value;
+
+const image =
+document.getElementById("newImage").value;
+
+if(name==="" || price==="" || image===""){
+alert("請輸入完整商品資料");
+return;
+}
+
+products.push({
+name,
+price,
+image
+});
+
+renderProducts();
+
+alert("新增成功");
+}
+
+/* ================= 自動登入 ================= */
+
+const currentUser =
+localStorage.getItem("currentUser");
+
+if(currentUser){
+showShop(currentUser);
+}
+
 </script>
 
 </body>
